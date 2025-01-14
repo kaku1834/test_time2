@@ -146,6 +146,15 @@ if auth_status:
     for plot_name, plot_time in plot_timings.items():
         timing_stats[f'プロット: {plot_name}'] = plot_time
 
+    # Calculate total processing time first
+    total_time = (
+        timing_stats['データ読み込み'] +
+        timing_stats['初期データ処理'] +
+        timing_stats['データ変換処理 (全体)'] +  # または詳細時間の合計
+        timing_stats['カラム準備'] +
+        timing_stats['グラフ生成 (全体)']  # または詳細時間の合計
+    )
+
     # Create and display timing summary
     timing_df = pd.DataFrame({
         '処理ステップ': timing_stats.keys(),
@@ -197,12 +206,4 @@ if auth_status:
     st.title("処理時間分析")
     ui.table(timing_df)
     
-    # Display total processing time
-    total_time = (
-        timing_stats['データ読み込み'] +
-        timing_stats['初期データ処理'] +
-        timing_stats['データ変換処理 (全体)'] +  # または詳細時間の合計
-        timing_stats['カラム準備'] +
-        timing_stats['グラフ生成 (全体)']  # または詳細時間の合計
-    )
     st.caption(f"総処理時間: {total_time:.2f} 秒")
